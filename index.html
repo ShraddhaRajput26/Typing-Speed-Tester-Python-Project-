@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Typing Speed Tester</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0eafc, #cfdef3);
+      margin: 0;
+      padding: 0;
+      background-image: url("{{ url_for('static', filename='key.jpg') }}");
+      background-repeat: no-repeat;
+      background-size: 100% auto;
+      background-position: center center;
+      background-attachment: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: #d9eaea;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px #008080(0, 0, 0, 0.15);
+      width: 500px;
+      text-align: center;
+      border: 3px solid #007acc;
+      resize: none;
+    }
+    h2 {
+      color: #008080;
+      margin-bottom: 15px;
+    }
+    #target {
+      font-size: 16px;
+      color: #007acc;
+      background-color: #f0f8ff;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    textarea {
+      width: 90%;
+      height: 100px;
+      font-size: 16px;
+      margin-top: 15px;
+      padding: 10px;
+      border: 2px solid #007acc;
+      border-radius: 5px;
+      resize: none;
+      outline-color: #007acc;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 25px;
+      font-size: 16px;
+      background-color: #008080;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #198f8f;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 15px;
+      color:#007acc;
+      background-color: #d9eaea;
+      border: 1px solid #d9eaea;
+      padding: 12px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  
+
+  <div class="container">
+    <h2>💻 Typing Speed Tester 💻</h2>
+    <p id="target"></p>
+    <textarea id="input" placeholder="Type the above sentence here..." onfocus="startTimer()"></textarea><br>
+    <button onclick="checkSpeed()">Check Speed & Accuracy</button>
+    <div id="result"></div>
+  </div>
+  
+
+  <script>
+    const sentences = [
+      "The quick brown fox jumps over the lazy dog.",
+      "Typing fast takes a lot of practice and patience.",
+      "JavaScript is a powerful language for web development.",
+      "Never stop learning because life never stops teaching.",
+      "This sentence is here to test your typing speed.",
+      "Success is not final, failure is not fatal.",
+      "Believe you can and you are halfway there.",
+      "Typing accuracy is just as important as speed.",
+      "The sky was full of stars that night.",
+      "Make each day your masterpiece.",
+      "Start where you are. Use what you have. Do what you can.",
+      "Typing helps improve hand-eye coordination.",
+      "Every moment is a fresh beginning.",
+      "Strive not to be a success, but rather to be of value.",
+      "Dream big and dare to fail.",
+      "A journey of a thousand miles begins with a single step.",
+      "Stay hungry, stay foolish.",
+      "You are stronger than you think.",
+      "Practice makes progress, not perfection.",
+      "Don’t watch the clock; do what it does. Keep going.",
+      "Creativity is intelligence having fun.",
+      "Failure is the opportunity to begin again more intelligently.",
+      "Push yourself, because no one else is going to do it for you.",
+      "Work hard in silence, let your success make the noise.",
+      "Difficult roads often lead to beautiful destinations.",
+      "You don’t need to see the whole staircase, just take the first step.",
+      "Great things never come from comfort zones.",
+      "Action is the foundational key to all success.",
+      "Focus on being productive instead of busy.",
+      "Sometimes we’re tested not to show our weaknesses but to discover our strengths."
+    ];
+
+    let targetText = "";
+    let startTime;
+
+    window.onload = () => {
+      targetText = sentences[Math.floor(Math.random() * sentences.length)];
+      document.getElementById("target").innerText = targetText;
+    };
+
+    function startTimer() {
+      if (!startTime) {
+        startTime = new Date();
+      }
+    }
+
+    function checkSpeed() {
+      const endTime = new Date();
+      const timeTaken = (endTime - startTime) / 1000;
+      const typed = document.getElementById("input").value.trim();
+      const wordsTyped = typed.split(/\s+/).length;
+      const wpm = ((wordsTyped / timeTaken) * 60).toFixed(2);
+      let correctChars = 0;
+      for (let i = 0; i < Math.min(typed.length, targetText.length); i++) {
+        if (typed[i] === targetText[i]) {
+          correctChars++;
+        }
+      }
+      const accuracy = ((correctChars / targetText.length) * 100).toFixed(2);
+      document.getElementById("result").innerText = 
+        ` 🕒  Time: ${timeTaken.toFixed(2)} sec  ✍  WPM: ${wpm} 🎯 Accuracy: ${accuracy}%`;
+      startTime = null;
+    }
+  </script>
+
+</body>
+</html>
